@@ -95,9 +95,9 @@ class GithubIssueParser:
         Issue structure:
             {
                 "ticket": {
-                    "ticket-id": int,
+                    "ticket_id": int,
                     "area": str,
-                    "issue-type": str,
+                    "issue_type": str,
                     "engagement": int,
                     "date": str
                     }
@@ -110,21 +110,21 @@ class GithubIssueParser:
         for issue in tqdm(issues):
             tmp = {
                 "ticket": {
-                    "ticket-id": 0,
+                    "ticket_id": 0,
                     "area": "",
-                    "issue-type": "",
+                    "issue_type": "",
                     "engagement": 0,
                     "date": ""
                 }
             }
-            tmp["ticket"]["ticket-id"] = issue.id
+            tmp["ticket"]["ticket_id"] = issue.id
             tmp["ticket"]["engagement"] = self._count_issue_engagement(issue)
 
             area, issue_type = self._issues_get_labels(issue)
             tmp["ticket"]["area"] = area
             tmp["ticket"]["issue_type"] = issue_type
 
-            tmp["ticket"]["date"] = issue.created_at.strftime("%x").replace("/", "-")
+            tmp["ticket"]["date"] = issue.created_at.strftime('%Y-%m-%d-%H-%M-%S')
             issue_list.append(tmp)
         issue_json = self._issues_to_json(issue_list)
         return issue_json
