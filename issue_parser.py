@@ -83,6 +83,14 @@ class GithubIssueParser:
         return area, issue_type
 
     def _issues_to_json(self, issue_list):
+        """
+        Creates json object of issue list
+
+        :param
+            issue_list: listed issues
+        :return
+            issue_json: isses as json format
+        """
         issue_dict = {"tickets": []}
         for issue in issue_list:
             issue_dict["tickets"].append(issue)
