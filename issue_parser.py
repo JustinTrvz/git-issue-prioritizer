@@ -1,7 +1,16 @@
+import datetime
 from github import Github
 import array
-import json
 from tqdm import tqdm
+
+
+class Ticket:
+    ticket_id = None
+    area = None
+    issue_type = None
+    engagement = None
+    date: datetime = None
+
 
 class GithubIssueParser:
     """
@@ -9,6 +18,7 @@ class GithubIssueParser:
     from Github and extracts the information that is relevant to the
     sorting script.
     """
+
     def __init__(self, access_token: str, ignored_users: array = ['riot-ci'], repo: str = "RIOT-OS/RIOT"):
         """
         Initializes an instance of a Github Issue Parser
@@ -81,21 +91,6 @@ class GithubIssueParser:
                     issue_type = types
         return area, issue_type
 
-    def _issues_to_json(self, issue_list):
-        """
-        Creates json object of issue list
-
-        :param
-            issue_list: listed issues
-        :return
-            issue_json: isses as json format
-        """
-        issue_dict = {"tickets": []}
-        for issue in issue_list:
-            issue_dict["tickets"].append(issue)
-        issue_json = json.dumps(issue_dict, indent=4)
-        return issue_json
-
     def get_issues(self):
         """
         Returns a list of Github issues.
@@ -115,23 +110,14 @@ class GithubIssueParser:
 
         print("Converting issues into custom format...")
         for issue in tqdm(issues):
-            tmp = {
-                "ticket": {
-                    "ticket_id": 0,
-                    "area": "",
-                    "issue_type": "",
-                    "engagement": 0,
-                    "date": ""
-                }
-            }
-            tmp["ticket"]["ticket_id"] = issue.id
-            tmp["ticket"]["engagement"] = self._count_issue_engagement(issue)
+            ticket_obj = Ticket()
+            ticket_obj.ticket_id = issue.id
+            ticket_obj.engagement = self._count_issue_engagement(issue)
 
             area, issue_type = self._issues_get_labels(issue)
-            tmp["ticket"]["area"] = area
-            tmp["ticket"]["issue_type"] = issue_type
+            ticket_obj.area = area
+            ticket_obj.issue_type = issue_type
 
-            tmp["ticket"]["date"] = issue.created_at.strftime('%Y-%m-%d-%H-%M-%S')
-            issue_list.append(tmp)
-        issue_json = self._issues_to_json(issue_list)
-        return issue_json
+            ticket_obj.date = issue.created_at.strftime('%Y-%m-%d-%H-%M-%S')
+            issue_list.append(ticket_obj)
+        return issue_list
