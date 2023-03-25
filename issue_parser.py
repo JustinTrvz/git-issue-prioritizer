@@ -5,6 +5,11 @@ from tqdm import tqdm
 
 
 class GithubIssueParser:
+    """
+    GithubIssueParser downloads issues of a specified repository
+    from Github and extracts the information that is relevant to the
+    sorting script.
+    """
     def __init__(self, access_token: str, ignored_users: array, repo: str = "RIOT-OS/RIOT"):
         """
         Initializes an instance of a Github Issue Parser
@@ -24,22 +29,41 @@ class GithubIssueParser:
         self._repo = self._g.get_repo(repo)
 
     def _get_issues_and_remove_prs(self):
+        """
+        Gets issues from repository and filters out all pull
+        requests, so we only have actual issues left.
+        """
         issues = self._repo.get_issues(state='open')
         print('Looking for open issues...')
         issues = [issue for issue in tqdm(issues) if issue.pull_request is None]
         print(f'Found {len(issues)} open issues')
         return issues
 
-    def _count_issue_engagement(self, issues):
+    def _count_issue_engagement(self, issue):
+        """
+        Count number of individual people who have
+        engaged in the comment section of an issue.
+
+        Parameters
+        ----------
+        issue : github.Issue.Issue
+        """
         issue_engagement = 0
-        if issues.comments > 0:
-            comments = issues.get_comments()
+        if issue.comments > 0:
+            comments = issue.get_comments()
             for comment in comments:
                 if comment.user.login not in self._ignored_users:
                     issue_engagement += 1
         return issue_engagement
 
-    def _issues_get_labels(self, issues):
+    def _issues_get_labels(self, issue):
+        """
+        Get relevant labels from an issue
+
+        Parameters
+        ----------
+        issue : github.Issue.Issue
+        """
         important_labels = [
             "Area: security",
             "Type: bug",
@@ -48,7 +72,7 @@ class GithubIssueParser:
 
         area = ""
         issue_type = ""
-        for label in issues.labels:
+        for label in issue.labels:
             if label.name in important_labels:
                 if label.name == "Area: security":
                     area = "security"
