@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from types import SimpleNamespace
 
 tickets = '{ \
@@ -13,7 +14,7 @@ class Ticket:
     area = None
     issue_type = None
     engagement = None
-    date = None
+    date:datetime  = None
 
 
 def main():
@@ -70,13 +71,37 @@ def main():
 
 
 def sort(tickets: [Ticket]):
-    security = []
+    security_bug = []
+    for x in tickets:
+        if x.area == "security" and x.issue_type=="bug":
+            security_bug.append(x)
+    for x in security_bug:
+        tickets.remove(x)
+    security_bug = bubbleedsort(security_bug)
+
+    security_enhancement = []
+    for x in tickets:
+        if x.area == "security" and x.issue_type=="enhancement":
+            security_enhancement.append(x)
+    for x in security_enhancement:
+        tickets.remove(x)
+    security_enhancement = bubbleedsort(security_enhancement)
+
+    security_new_feature = []
+    for x in tickets:
+        if x.area == "security" and x.issue_type=="new feature":
+            security_new_feature.append(x)
+    for x in security_new_feature:
+        tickets.remove(x)
+    security_new_feature = bubbleedsort(security_new_feature)
+
+    security_no_label = []
     for x in tickets:
         if x.area == "security":
-            security.append(x)
-    for x in security:
+            security_no_label.append(x)
+    for x in security_no_label:
         tickets.remove(x)
-    security = bubbleedsort(security)
+    security_no_label = bubbleedsort(security_no_label)
 
     bug = []
     for x in tickets:
@@ -88,7 +113,7 @@ def sort(tickets: [Ticket]):
 
     improvements = []
     for x in tickets:
-        if x.area == "improvement":
+        if x.issue_type == "enhancement":
             improvements.append(x)
     for x in improvements:
         tickets.remove(x)
@@ -102,13 +127,13 @@ def sort(tickets: [Ticket]):
         tickets.remove(x)
     new_feature = bubbleedsort(new_feature)
 
-    bastarde = []
+    uncategorized = []
     for x in tickets:
-        bastarde.append(x)
-    bastarde = bubbleedsort(bastarde)
+        uncategorized.append(x)
+    uncategorized = bubbleedsort(uncategorized)
 
-    tickets = security + bug+improvements + new_feature + bastarde
-    # append other areas/issues
+    tickets = security_bug + security_enhancement + security_new_feature + security_no_label + bug+improvements + new_feature + uncategorized
+
     return tickets
 
 
