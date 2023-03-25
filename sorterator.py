@@ -14,7 +14,7 @@ class Ticket:
     area = None
     issue_type = None
     engagement = None
-    date:datetime  = None
+    date  = None
 
 
 def main():
