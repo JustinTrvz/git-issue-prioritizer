@@ -1,17 +1,13 @@
 import json
 from datetime import datetime
 from types import SimpleNamespace
-
 from ticket import Ticket
-
-sort_rank = 0
 
 
 def sort(tickets: [Ticket]):
     security_bug = []
     for ticket in tickets:
         if ticket.area == "security" and ticket.issue_type == "bug":
-            ticket.set_sort_rank(sort_rank)
             security_bug.append(ticket)
     for ticket in security_bug:
         tickets.remove(ticket)
@@ -71,15 +67,6 @@ def sort(tickets: [Ticket]):
     uncategorized = bubbleedsort(uncategorized)
 
     tickets = security_bug + security_enhancement + security_new_feature + security_no_label + bug + improvements + new_feature + uncategorized
-    tickets = assign_sort_ranks(tickets)
-    return tickets
-
-
-def assign_sort_ranks(tickets):
-    sort_rank = 0
-    for ticket in tickets:
-        ticket.set_sort_rank(sort_rank)
-        sort_rank += 1
     return tickets
 
 
@@ -94,17 +81,3 @@ def bubbleedsort(tickets: [Ticket]):
                 tickets[y + 1] = tmp
 
     return tickets
-
-
-def tf(ticket_id, area, issue_type, engagement, date):
-    ret = Ticket()
-    ret.ticket_id = ticket_id
-    ret.area = area
-    ret.issue_type = issue_type
-    ret.engagement = engagement
-    ret.date = date
-    return ret
-
-
-if __name__ == "__main__":
-    main()

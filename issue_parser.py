@@ -116,16 +116,31 @@ class GithubIssueParser:
         self.ticket_list = sort(self.ticket_list)
 
     def get_ticket_list(self):
+        """
+        Returns converted and sorted ticket list.
+
+        :return:
+            converted and sorted ticket list
+        """
         self._convert_and_sort_issues()
         return self.ticket_list
 
     def print_result(self, ):
+        """
+        Prints ticket list in a human readable format to the console
+        """
         counter = 0
         for issue in self.ticket_list:
             print(f"#{counter}: " + issue.to_string())
             counter += 1
 
     def ticket_list_to_json(self, output_location):
+        """
+        Saved sorted ticket list as json file to the desired location.
+
+        :param
+            output_location: save location (e.g. '/home/user/Documents')
+        """
         sort_rank = 0
         ticket_dict = {}
         for ticket in self.ticket_list:

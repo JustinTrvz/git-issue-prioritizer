@@ -1,8 +1,29 @@
 import json
 
+"""
+Github ticket class
+"""
+
+
 class Ticket:
+    """
+    Initializes and instance of a Github ticket.
+    Parameters
+    ----------
+    ticket_id : int
+        Github issue ID
+    area : str
+        Area of the ticket
+    issue_type : str
+        Type of ticket
+    engagement : int
+        Number of commentators below issue
+    date : str
+        Date and time the issue was posted
+    """
+
     def __init__(self,
-                 ticket_id: str,
+                 ticket_id: int,
                  area: str,
                  issue_type: str,
                  engagement: int,
@@ -19,7 +40,7 @@ class Ticket:
     def get_ticket_id(self):
         return self.ticket_id
 
-    def set_ticket_id(self, ticket_id: str):
+    def set_ticket_id(self, ticket_id: int):
         self.ticket_id = ticket_id
 
     def get_area(self):
@@ -45,9 +66,3 @@ class Ticket:
 
     def set_date(self, date: str):
         self.date = date
-
-    def get_sort_rank(self):
-        return self.sort_rank
-
-    def set_sort_rank(self, sort_rank):
-        self.sort_rank = sort_rank
