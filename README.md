@@ -8,7 +8,8 @@ from issue_parser import GithubIssueParser
 
 token = <your github access token>
 repo = "RIOT-OS/RIOT"
-parser = GithubIssueParser(token, repo)
+ignored_users = []
+parser = GithubIssueParser(token, ignored_users, repo)
 issues = parser.get_issues()
 ```
 

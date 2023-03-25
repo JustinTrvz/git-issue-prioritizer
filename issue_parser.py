@@ -3,14 +3,13 @@ import array
 import json
 from tqdm import tqdm
 
-
 class GithubIssueParser:
     """
     GithubIssueParser downloads issues of a specified repository
     from Github and extracts the information that is relevant to the
     sorting script.
     """
-    def __init__(self, access_token: str, ignored_users: array, repo: str = "RIOT-OS/RIOT"):
+    def __init__(self, access_token: str, ignored_users: array = ['riot-ci'], repo: str = "RIOT-OS/RIOT"):
         """
         Initializes an instance of a Github Issue Parser
 
