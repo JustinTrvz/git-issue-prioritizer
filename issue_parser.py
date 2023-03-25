@@ -102,6 +102,6 @@ class GithubIssueParser:
         print("Converting issues into custom format...")
         for issue in tqdm(issues):
             area, issue_type = self._issues_get_labels(issue)
-            ticket_obj = Ticket(issue.id, area, issue_type, self._count_issue_engagement(issue), issue.created_at.strftime('%Y-%m-%d %H:%M:%S'))
+            ticket_obj = Ticket(issue.number, area, issue_type, self._count_issue_engagement(issue), issue.created_at.strftime('%Y-%m-%d %H:%M:%S'))
             issue_list.append(ticket_obj)
         return issue_list
