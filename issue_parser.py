@@ -1,16 +1,7 @@
-import datetime
 from github import Github
+from ticket import Ticket
 import array
 from tqdm import tqdm
-
-
-class Ticket:
-    ticket_id = None
-    area = None
-    issue_type = None
-    engagement = None
-    date: datetime = None
-
 
 class GithubIssueParser:
     """
@@ -110,14 +101,7 @@ class GithubIssueParser:
 
         print("Converting issues into custom format...")
         for issue in tqdm(issues):
-            ticket_obj = Ticket()
-            ticket_obj.ticket_id = issue.id
-            ticket_obj.engagement = self._count_issue_engagement(issue)
-
             area, issue_type = self._issues_get_labels(issue)
-            ticket_obj.area = area
-            ticket_obj.issue_type = issue_type
-
-            ticket_obj.date = issue.created_at.strftime('%Y-%m-%d-%H-%M-%S')
+            ticket_obj = Ticket(issue.id, area, issue_type, self._count_issue_engagement(issue), issue.created_at.strftime('%Y-%m-%d %H:%M:%S'))
             issue_list.append(ticket_obj)
         return issue_list
