@@ -94,3 +94,17 @@ def bubbleedsort(tickets: [Ticket]):
                 tickets[y + 1] = tmp
 
     return tickets
+
+
+def tf(ticket_id, area, issue_type, engagement, date):
+    ret = Ticket()
+    ret.ticket_id = ticket_id
+    ret.area = area
+    ret.issue_type = issue_type
+    ret.engagement = engagement
+    ret.date = date
+    return ret
+
+
+if __name__ == "__main__":
+    main()
